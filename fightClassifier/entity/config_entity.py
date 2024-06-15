@@ -5,4 +5,4 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class DataIngestionConfig:
     kaggle_dataset_dir: Path
-    kaggle_source_URL: str
+    kaggle_dataset_name: str

@@ -3,17 +3,14 @@ from pathlib import Path
 import os
 import kaggle
 from fightClassifier.config.configuration import ConfigurationManager
+from fightClassifier.entity.config_entity import DataIngestionConfig
 
 
 class DataIngestion:
-    def __init__(self):
-        pass
+    def __init__(self,config:DataIngestionConfig):
+        self.config = config
     
     def auth(self):
-
-        configurationManager = ConfigurationManager()
-        config = configurationManager.config_data_ingestion()
-        print('config == > ',config)
 
         try:
             kaggle.api.authenticate()
@@ -24,11 +21,12 @@ class DataIngestion:
     def download_dataset_from_kaggle(self):
         try:
             logger.info('downloading dataset from kaggle')
-            os.makedirs('artifacts/kaggle_dataset',exist_ok=True)
-            # kaggle.api.dataset_download_files('naveenk903/movies-fight-detection-dataset', path='./artifacts/kaggle_dataset', unzip=True)
+            os.makedirs(self.config.kaggle_dataset_dir,exist_ok=True)
+            print(self.config)
+            kaggle.api.dataset_download_files(self.config.kaggle_dataset_name, path=self.config.kaggle_dataset_dir, unzip=True)
             logger.info('download completed')
         except Exception as e:
-            logger.error('Error while downloading : '+e)
+            logger.error(e)
 
 
 

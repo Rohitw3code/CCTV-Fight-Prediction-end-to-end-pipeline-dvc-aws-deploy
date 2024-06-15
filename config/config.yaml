@@ -2,4 +2,4 @@ artifacts_root: artifacts
 
 data_ingestion:
     kaggle_dataset_dir: artifacts/kaggle_dataset
-    kaggle_source_URL: naveenk903/movies-fight-detection-dataset
+    kaggle_dataset_name: naveenk903/movies-fight-detection-dataset
