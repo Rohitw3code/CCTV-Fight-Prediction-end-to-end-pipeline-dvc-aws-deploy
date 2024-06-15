@@ -1,8 +1,11 @@
 from keras import layers, ops
+import tensorflow as tf
 import keras
 import os
 from fightClassifier.entity.config_entity import ModelTrainConfig
 from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
+from fightClassifier.config.configuration import ConfigurationManager
+
 
 INPUT_SHAPE = (42, 128, 128, 3)
 NUM_CLASSES = 2
@@ -27,11 +30,14 @@ NUM_PATCHES = (INPUT_SHAPE[0] // PATCH_SIZE[0]) ** 2
 
 
 class ModelTraining:
-    def __init__(self,trainLoader,testLoader,validLoader,config:ModelTrainConfig):
+    def __init__(self,trainLoader=None,
+                 testLoader=None,
+                 validLoader=None):
         self.trainloader = trainLoader
         self.testloader = testLoader
         self.validloader = validLoader
-        self.config = config
+        self.config = ConfigurationManager()
+        self.config = self.config.config_model_train()
         self.model = None
 
     def _create_vivit_classifier(
@@ -110,10 +116,15 @@ class ModelTraining:
         # Train the model.
         _ = self.model.fit(self.trainloader, epochs=EPOCHS, validation_data=self.validloader)
 
-        _, accuracy, top_5_accuracy = self.model.evaluate(self.testloader)
-        print(f"Test accuracy: {round(accuracy * 100, 2)}%")
-        print(f"Test top 5 accuracy: {round(top_5_accuracy * 100, 2)}%")
+        # _, accuracy, top_5_accuracy = self.model.evaluate(self.testloader)
+        # print(f"Test accuracy: {round(accuracy * 100, 2)}%")
+        # print(f"Test top 5 accuracy: {round(top_5_accuracy * 100, 2)}%")
 
+        return self.model
+    
+    def load_model(self):
+        self.model = tf.keras.models.load_model(os.path.join(self.config.save_model_dir,
+                                     self.config.save_model_name))
         return self.model
 
     def save_model(self):

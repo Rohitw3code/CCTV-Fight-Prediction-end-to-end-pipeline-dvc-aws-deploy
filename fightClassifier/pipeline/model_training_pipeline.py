@@ -7,14 +7,11 @@ class ModelTrainingPipeline:
         self.trainLoader = trainLoader
         self.testLoader = testLoader
         self.validLoader = validLoader
-        self.config = ConfigurationManager()
 
     def main(self):
-        config = self.config.config_model_train()
         modelTrain = ModelTraining(trainLoader=self.trainLoader,
                                    testLoader=self.testLoader,
                                    validLoader=self.validLoader,
-                                   config=config
                                    )
         
         model = modelTrain.train()

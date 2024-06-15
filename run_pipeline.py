@@ -2,6 +2,7 @@ from fightClassifier.pipeline.data_ingestion_pipeline import DataIngestionPipeli
 from fightClassifier.pipeline.data_preprocessing import DataPreprocessingPipeline
 from fightClassifier.pipeline.data_loader_pipeline import DataLoaderPipeline
 from fightClassifier.pipeline.model_training_pipeline import ModelTrainingPipeline
+from fightClassifier.pipeline.evaluate_pipeline import EvaluateModelPipeline
 
 from fightClassifier import logger
 
@@ -28,6 +29,12 @@ if __name__ == '__main__':
     
     model = model_train.main()
     logger.info('Ended------>  ModelTraining Pipeline')
+
+
+    logger.info('Started---->  Evaluation Pipeline')
+    eval_ = EvaluateModelPipeline(testLoader=testLoader)    
+    eval_.main()
+    logger.info('Ended------>  Evaluation Pipeline')
 
 
 
