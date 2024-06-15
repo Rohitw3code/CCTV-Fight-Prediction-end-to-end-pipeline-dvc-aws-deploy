@@ -1,2 +1,4 @@
 kaggle
 PyYAML
+opencv-python
+numpy

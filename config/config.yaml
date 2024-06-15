@@ -3,3 +3,7 @@ artifacts_root: artifacts
 data_ingestion:
     kaggle_dataset_dir: artifacts/kaggle_dataset
     kaggle_dataset_name: naveenk903/movies-fight-detection-dataset
+
+data_preprocessing:
+    load_dataset_dir: artifacts/kaggle_dataset/Peliculas
+    

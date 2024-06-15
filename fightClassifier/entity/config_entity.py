@@ -6,3 +6,7 @@ from dataclasses import dataclass
 class DataIngestionConfig:
     kaggle_dataset_dir: Path
     kaggle_dataset_name: str
+
+@dataclass(frozen=True)
+class DataPreprocessingConfig:
+    load_dataset_dir:Path
