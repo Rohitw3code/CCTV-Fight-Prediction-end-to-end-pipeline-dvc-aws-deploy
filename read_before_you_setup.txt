@@ -1,0 +1,4 @@
+create venv
+install requirements.txt
+generate the kaggle api
+place the kaggle.json in user/.kaggle/ folder
