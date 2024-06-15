@@ -40,7 +40,11 @@ class DataPreprocessing:
         startf = f//2 - max_frame//2
         return video[startf:startf+max_frame, :, :, :]
 
-    def load_video(self)->Tuple[np.asarray,np.asarray]:
+    def load_video(self)->Tuple[np.asarray,
+                                np.concatenate,
+                                np.asarray]:
+
+        category_lens = dict()
         for classes in os.listdir(self.path):
             logger.info(f'loading --> {classes} data')
             class_folder_path = os.path.join(self.path,classes)
@@ -56,11 +60,18 @@ class DataPreprocessing:
                 dims[:,0] = video.shape[0]
                 video_dims += dims.tolist()
                 fights.append(self._trim_video_frames(video,42)) #42 means each video trimed to 42 frames only
-
+            
+            category_lens[classes] = len(fights)
             self.final_dataset += fights
             self.final_dims += video_dims
+        
+        logger.info(f'Class map : {category_lens}')
+
         self.final_dataset = np.asarray(self.final_dataset)
         self.final_dims = np.asarray(self.final_dims)
-        return self.final_dataset,self.final_dims
+
+        labels = np.concatenate([np.ones(category_lens['fights']),np.zeros(category_lens['noFights'])])
+        logger.info('Fight---> 1 & NoFights---> 0')
+        return self.final_dataset,labels,self.final_dims
 
 

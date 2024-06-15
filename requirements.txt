@@ -3,3 +3,8 @@ PyYAML
 opencv-python
 numpy
 dvc
+scikit-learn
+imageio
+ipywidgets
+tensorflow==2.15.0
+keras==3.3.3
