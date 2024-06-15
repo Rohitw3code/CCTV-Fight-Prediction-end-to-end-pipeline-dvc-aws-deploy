@@ -1,5 +1,5 @@
 from fightClassifier.utils.read_yaml import read_yaml
-from fightClassifier.entity.config_entity import DataIngestionConfig,DataPreprocessingConfig
+from fightClassifier.entity.config_entity import DataIngestionConfig,DataPreprocessingConfig,ModelTrainConfig
 from fightClassifier import logger
 
 class ConfigurationManager:
@@ -25,6 +25,16 @@ class ConfigurationManager:
             config = DataPreprocessingConfig(
                 load_dataset_dir=config['load_dataset_dir']
             )
+        except Exception as e:
+            logger.error(e)
+        return config
+    
+
+    def config_model_train(self)->ModelTrainConfig:
+        try:
+            config = self.config['model_train']
+            config = ModelTrainConfig(save_model_dir=config['save_model_dir'],
+                                      save_model_name=config['save_model_name'])
         except Exception as e:
             logger.error(e)
         return config

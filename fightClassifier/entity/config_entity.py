@@ -10,3 +10,8 @@ class DataIngestionConfig:
 @dataclass(frozen=True)
 class DataPreprocessingConfig:
     load_dataset_dir:Path
+
+@dataclass(frozen=True)
+class ModelTrainConfig:
+    save_model_dir:Path
+    save_model_name: Path

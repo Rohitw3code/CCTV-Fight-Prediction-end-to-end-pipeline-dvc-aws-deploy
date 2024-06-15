@@ -6,4 +6,7 @@ data_ingestion:
 
 data_preprocessing:
     load_dataset_dir: artifacts/kaggle_dataset/Peliculas
-    
+
+model_train:
+    save_model_dir: artifacts/models
+    save_model_name: video.keras

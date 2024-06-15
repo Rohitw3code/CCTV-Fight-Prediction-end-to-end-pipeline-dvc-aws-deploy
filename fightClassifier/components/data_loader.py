@@ -87,7 +87,6 @@ class DataLoader:
         batch_size: int = BATCH_SIZE,
     ):
         """Utility function to prepare the dataloader."""
-        logger.info('----> prepareing the dataloader')
         dataset = tf.data.Dataset.from_tensor_slices((videos, labels))
 
         if loader_type == "train":
@@ -98,7 +97,6 @@ class DataLoader:
             .batch(batch_size)
             .prefetch(tf.data.AUTOTUNE)
         )
-        logger.info('-----> Dataloder done :)')
         return dataloader
     
     def get_loaders(self)->Tuple[prepare_dataloader,
