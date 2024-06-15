@@ -1,5 +1,5 @@
 from fightClassifier.utils.read_yaml import read_yaml
-from fightClassifier.entity.config_entity import DataIngestionConfig
+from fightClassifier.entity.config_entity import DataIngestionConfig,DataPreprocessingConfig
 from fightClassifier import logger
 
 class ConfigurationManager:
@@ -17,4 +17,14 @@ class ConfigurationManager:
         except Exception as e:
             logger.error(e)            
 
+        return config
+    
+    def config_data_preprocessing(self)->DataPreprocessingConfig:
+        config = self.config['data_preprocessing']
+        try:
+            config = DataPreprocessingConfig(
+                load_dataset_dir=config['load_dataset_dir']
+            )
+        except Exception as e:
+            logger.error(e)
         return config

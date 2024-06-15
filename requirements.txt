@@ -2,3 +2,4 @@ kaggle
 PyYAML
 opencv-python
 numpy
+dvc
