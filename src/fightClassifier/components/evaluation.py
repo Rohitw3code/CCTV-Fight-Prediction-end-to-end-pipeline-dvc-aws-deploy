@@ -9,11 +9,10 @@ import os
 
 
 class Evaluate:
-    def __init__(self,testLoader,config:MLFlowConfig):
+    def __init__(self,testLoader):
         self.testLoader = testLoader
         self.accuracy = 0
         self.top_5_accuracy = 0
-        self.config = config
         self.model = None        
 
     def evaluate(self):

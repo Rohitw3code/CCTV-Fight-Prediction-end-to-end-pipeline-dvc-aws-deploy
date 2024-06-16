@@ -6,8 +6,6 @@ class EvaluateModelPipeline:
         self.testLoader = testLoader
 
     def main(self):
-        configManager = ConfigurationManager()
-        config = configManager.config_mlflow()        
-        evaluate = Evaluate(self.testLoader,config=config)
+        evaluate = Evaluate(self.testLoader)
         evaluate.evaluate()
         evaluate.mlflow_track()

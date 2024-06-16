@@ -7,6 +7,9 @@ from fightClassifier.entity.config_entity import ModelTrainConfig
 from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
 from fightClassifier.config.configuration import ConfigurationManager
 from fightClassifier.entity.param_entity import MeraParam
+from urllib.parse import urlparse
+import mlflow
+
 
 INPUT_SHAPE = (42, 128, 128, 3)
 NUM_CLASSES = 2
@@ -117,6 +120,22 @@ class ModelTraining:
         _ = self.model.fit(self.trainloader, epochs=self.params.training_param.epochs, validation_data=self.validloader)
 
         return self.model
+    
+    def mlflow_tracker(self):
+        with mlflow.start_run():
+            print("paran--> ",self.params)
+            mlflow.log_params({
+                'batch_size':self.params.data_param.batch_size,
+                'patch_size':self.params.tube_embedding_param.patch_size,
+                'epochs':self.params.training_param.epochs,
+                'learning_rate':self.params.optimizer_param.learning_rate,
+                'weight_decay':self.params.optimizer_param.weight_decay,
+            })
+            mlflow.log_metrics({
+                'test':0,
+                "train":0
+            })
+
     
     def load_model(self):
         self.model = tf.keras.models.load_model(os.path.join(self.config.save_model_dir,

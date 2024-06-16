@@ -19,5 +19,6 @@ class ModelTrainingPipeline:
         
         model = modelTrain.train()
         modelTrain.save_model()
+        modelTrain.mlflow_tracker()
         return model
 

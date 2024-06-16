@@ -18,3 +18,4 @@ class MLFlowSetUp:
         os.environ['MLFLOW_TRACKING_URI'] = self.config.mlflow_tracking_uri
         os.environ['MLFLOW_TRACKING_USERNAME'] = self.config.mlflow_tracking_username
         os.environ['MLFLOW_TRACKING_PASSWORD'] = self.config.mlflow_tracking_password
+

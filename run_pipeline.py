@@ -10,7 +10,7 @@ from fightClassifier import logger
 if __name__ == '__main__':
     logger.info('setup MLFlow and Daghub connection')
     mlflow_pipeline = MLFlowPipeline()
-    mlflow_pipeline.main()
+    mlflow = mlflow_pipeline.main()
     logger.info('Ended---->  MLFlow setup done :)')
 
     logger.info('Started---->  Data Ingestion Pipeline')
