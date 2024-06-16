@@ -21,3 +21,6 @@ class MLFlowConfig:
     mlflow_tracking_uri:str
     mlflow_tracking_username:str
     mlflow_tracking_password:str
+    repo_owner:str
+    repo_name:str
+    mlflow:bool

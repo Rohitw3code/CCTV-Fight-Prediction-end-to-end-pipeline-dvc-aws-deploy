@@ -3,10 +3,16 @@ from fightClassifier.pipeline.data_preprocessing import DataPreprocessingPipelin
 from fightClassifier.pipeline.data_loader_pipeline import DataLoaderPipeline
 from fightClassifier.pipeline.model_training_pipeline import ModelTrainingPipeline
 from fightClassifier.pipeline.evaluate_pipeline import EvaluateModelPipeline
+from fightClassifier.pipeline.daghub_mlflow_pipeline import MLFlowPipeline
 
 from fightClassifier import logger
 
 if __name__ == '__main__':
+    logger.info('setup MLFlow and Daghub connection')
+    mlflow_pipeline = MLFlowPipeline()
+    mlflow_pipeline.main()
+    logger.info('Ended---->  MLFlow setup done :)')
+
     logger.info('Started---->  Data Ingestion Pipeline')
     data_ingestion = DataIngestionPipeline()
     data_ingestion.main()

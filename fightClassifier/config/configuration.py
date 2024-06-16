@@ -47,7 +47,11 @@ class ConfigurationManager:
             config = self.config['mlflow_credential']
             config = MLFlowConfig(mlflow_tracking_uri=config['MLFLOW_TRACKING_URI'],
                                   mlflow_tracking_username=config['MLFLOW_TRACKING_USERNAME'],
-                                  mlflow_tracking_password=config['MLFLOW_TRACKING_PASSWORD'])
+                                  mlflow_tracking_password=config['MLFLOW_TRACKING_PASSWORD'],
+                                  repo_name=config['REPO_NAME'],
+                                  repo_owner=config['REPO_OWNER'],
+                                  mlflow=config['MLFLOW'])
+            
         except Exception as e:
             logger.error(e)
         return config

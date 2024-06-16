@@ -12,6 +12,9 @@ model_train:
     save_model_name: video.keras
 
 mlflow_credential:
+    MLFLOW: TRUE
+    REPO_NAME: 'CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy'
+    REPO_OWNER: 'rohitcode005'
     MLFLOW_TRACKING_URI: https://dagshub.com/rohitcode005/CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy.mlflow
     MLFLOW_TRACKING_USERNAME: rohitcode005
     MLFLOW_TRACKING_PASSWORD: ''
