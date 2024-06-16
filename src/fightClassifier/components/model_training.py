@@ -1,6 +1,7 @@
-from keras import layers, ops
+from keras import layers
 import tensorflow as tf
 import keras
+from keras import ops
 import os
 from fightClassifier.entity.config_entity import ModelTrainConfig
 from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder

@@ -6,7 +6,8 @@ dvc
 scikit-learn
 imageio
 ipywidgets
-tensorflow==2.15.0
-keras==3.3.3
+tensorflow
+keras
 dagshub
 mlflow
+-e .
