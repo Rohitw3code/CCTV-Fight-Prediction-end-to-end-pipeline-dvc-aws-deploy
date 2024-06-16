@@ -27,3 +27,11 @@ class ViViTArchitectureParam:
     projection_dim: int
     num_heads: int
     num_layers: int
+
+@dataclass(frozen=True)
+class MeraParam:
+    data_param:DataParam
+    optimizer_param:OptimizerParam
+    training_param:TrainingParam
+    tube_embedding_param:TubeletEmbeddingParam
+    vivit_arch_param:ViViTArchitectureParam

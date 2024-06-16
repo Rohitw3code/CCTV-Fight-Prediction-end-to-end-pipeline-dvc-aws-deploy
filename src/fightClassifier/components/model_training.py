@@ -6,7 +6,7 @@ import os
 from fightClassifier.entity.config_entity import ModelTrainConfig
 from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
 from fightClassifier.config.configuration import ConfigurationManager
-
+from fightClassifier.entity.param_entity import MeraParam
 
 INPUT_SHAPE = (42, 128, 128, 3)
 NUM_CLASSES = 2
@@ -33,10 +33,12 @@ NUM_PATCHES = (INPUT_SHAPE[0] // PATCH_SIZE[0]) ** 2
 class ModelTraining:
     def __init__(self,trainLoader=None,
                  testLoader=None,
-                 validLoader=None):
+                 validLoader=None,
+                 params:MeraParam=dict()):
         self.trainloader = trainLoader
         self.testloader = testLoader
         self.validloader = validLoader
+        self.params = params
         self.config = ConfigurationManager()
         self.config = self.config.config_model_train()
         self.model = None
@@ -44,27 +46,22 @@ class ModelTraining:
     def _create_vivit_classifier(
         self,
         tubelet_embedder,
-        positional_encoder,
-        input_shape=INPUT_SHAPE,
-        transformer_layers=NUM_LAYERS,
-        num_heads=NUM_HEADS,
-        embed_dim=PROJECTION_DIM,
-        layer_norm_eps=LAYER_NORM_EPS,
-        num_classes=NUM_CLASSES,
-    ):
+        positional_encoder):
         # Get the input layer
-        inputs = layers.Input(shape=input_shape)
+        inputs = layers.Input(shape=self.params.data_param.input_shape)
         # Create patches.
         patches = tubelet_embedder(inputs)
         # Encode patches.
         encoded_patches = positional_encoder(patches)
 
         # Create multiple layers of the Transformer block.
-        for _ in range(transformer_layers):
+        for _ in range(self.params.vivit_arch_param.num_layers):
             # Layer normalization and MHSA
             x1 = layers.LayerNormalization(epsilon=1e-6)(encoded_patches)
             attention_output = layers.MultiHeadAttention(
-                num_heads=num_heads, key_dim=embed_dim // num_heads, dropout=0.1
+                num_heads=self.params.vivit_arch_param.num_heads,
+                key_dim=self.params.vivit_arch_param.projection_dim // self.params.vivit_arch_param.num_heads, 
+                dropout=0.1
             )(x1, x1)
 
             # Skip connection
@@ -74,8 +71,8 @@ class ModelTraining:
             x3 = layers.LayerNormalization(epsilon=1e-6)(x2)
             x3 = keras.Sequential(
                 [
-                    layers.Dense(units=embed_dim * 4, activation=ops.gelu),
-                    layers.Dense(units=embed_dim, activation=ops.gelu),
+                    layers.Dense(units=self.params.vivit_arch_param.projection_dim * 4, activation=ops.gelu),
+                    layers.Dense(units=self.params.vivit_arch_param.projection_dim, activation=ops.gelu),
                 ]
             )(x3)
 
@@ -83,11 +80,12 @@ class ModelTraining:
             encoded_patches = layers.Add()([x3, x2])
 
         # Layer normalization and Global average pooling.
-        representation = layers.LayerNormalization(epsilon=layer_norm_eps)(encoded_patches)
+        representation = layers.LayerNormalization(epsilon=self.params.vivit_arch_param.layer_norm_eps)(encoded_patches)
         representation = layers.GlobalAvgPool1D()(representation)
 
         # Classify outputs.
-        outputs = layers.Dense(units=num_classes, activation="softmax")(representation)
+        outputs = layers.Dense(units=self.params.data_param.num_classes,
+                            activation="softmax")(representation)
 
         # Create the Keras model.
         self.model = keras.Model(inputs=inputs, outputs=outputs)
@@ -97,14 +95,15 @@ class ModelTraining:
         # Initialize model
         self.model = self._create_vivit_classifier(
             tubelet_embedder=TubeletEmbedding(
-                embed_dim=PROJECTION_DIM, patch_size=PATCH_SIZE
+                embed_dim=self.params.vivit_arch_param.projection_dim,
+                patch_size=self.params.tube_embedding_param.patch_size
             ),
-            positional_encoder=PositionalEncoder(embed_dim=PROJECTION_DIM),
+            positional_encoder=PositionalEncoder(embed_dim=self.params.vivit_arch_param.projection_dim),
         )
 
         # Compile the model with the optimizer, loss function
         # and the metrics.
-        optimizer = keras.optimizers.Adam(learning_rate=LEARNING_RATE)
+        optimizer = keras.optimizers.Adam(learning_rate=self.params.optimizer_param.learning_rate)
         self.model.compile(
             optimizer=optimizer,
             loss="sparse_categorical_crossentropy",
@@ -115,11 +114,7 @@ class ModelTraining:
         )
 
         # Train the model.
-        _ = self.model.fit(self.trainloader, epochs=EPOCHS, validation_data=self.validloader)
-
-        # _, accuracy, top_5_accuracy = self.model.evaluate(self.testloader)
-        # print(f"Test accuracy: {round(accuracy * 100, 2)}%")
-        # print(f"Test top 5 accuracy: {round(top_5_accuracy * 100, 2)}%")
+        _ = self.model.fit(self.trainloader, epochs=self.params.training_param.epochs, validation_data=self.validloader)
 
         return self.model
     

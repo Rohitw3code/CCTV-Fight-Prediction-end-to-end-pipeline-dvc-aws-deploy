@@ -1,7 +1,7 @@
 from tensorflow.keras.utils import register_keras_serializable
 import tensorflow as tf  # for data preprocessing only
 from keras import layers
-
+from typing import Tuple
 
 @register_keras_serializable(package="Custom", name="TubeletEmbedding")
 class TubeletEmbedding(layers.Layer):

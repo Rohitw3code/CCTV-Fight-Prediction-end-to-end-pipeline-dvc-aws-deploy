@@ -3,15 +3,35 @@ from fightClassifier.entity.param_entity import (DataParam,
                                                  ViViTArchitectureParam,
                                                  TrainingParam,
                                                  OptimizerParam,
-                                                 TubeletEmbeddingParam)
+                                                 TubeletEmbeddingParam,
+                                                 MeraParam)
+
+import ast
 
 
 from fightClassifier import logger
 
 class ParamManager:
     def __init__(self,PARAMS_PATH='params.yaml'):
-        self.params = read_yaml(PARAMS_PATH)
+        self.params_value = read_yaml(PARAMS_PATH)
+        self.params = self.evaluate_nested_dict(self.params_value)
+    
+    def safe_eval(self,value):
+        try:
+            # Use ast.literal_eval for safe evaluation of literals
+            return ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            # Return the original value if it can't be evaluated
+            return value
 
+    def evaluate_nested_dict(self,d):
+        for key, value in d.items():
+            if isinstance(value, str):
+                d[key] = self.safe_eval(value)
+            elif isinstance(value, dict):
+                d[key] = self.evaluate_nested_dict(value)
+        return d
+    
     def param_data(self)->DataParam:
         try:
             param = self.params['data']
@@ -64,4 +84,17 @@ class ParamManager:
             )
         except Exception as e:
             logger.error(e)
+        
+    def param_mega(self)->MeraParam:
+        try:
+            return MeraParam(
+                data_param=self.param_data(),
+                optimizer_param=self.param_optimizer(),
+                training_param=self.param_training(),
+                tube_embedding_param=self.param_tubelet_embedding(),
+                vivit_arch_param=self.param_vivit_architecture()
+            )
+        except Exception as e:
+            logger.error(e)
+    
 
