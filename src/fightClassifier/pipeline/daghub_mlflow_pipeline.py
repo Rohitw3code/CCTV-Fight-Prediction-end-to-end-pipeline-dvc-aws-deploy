@@ -11,6 +11,7 @@ class MLFlowPipeline:
         mlflow = MLFlowSetUp(config=config)
         mlflow.init()
         mlflow.setup_credentials()
+        mlflow.mlflow_tracker()
 
 
 

@@ -8,10 +8,6 @@ from fightClassifier.pipeline.daghub_mlflow_pipeline import MLFlowPipeline
 from fightClassifier import logger
 
 if __name__ == '__main__':
-    logger.info('setup MLFlow and Daghub connection')
-    mlflow_pipeline = MLFlowPipeline()
-    mlflow = mlflow_pipeline.main()
-    logger.info('Ended---->  MLFlow setup done :)')
 
     logger.info('Started---->  Data Ingestion Pipeline')
     data_ingestion = DataIngestionPipeline()
@@ -41,6 +37,11 @@ if __name__ == '__main__':
     eval_ = EvaluateModelPipeline(testLoader=testLoader)    
     eval_.main()
     logger.info('Ended------>  Evaluation Pipeline')
+
+    logger.info('setup MLFlow tracker started--->')
+    mlflow_pipeline = MLFlowPipeline()
+    mlflow_pipeline.main()
+    logger.info('Ended---->  MLFlow setup done :)')
 
 
 
