@@ -15,3 +15,9 @@ class DataPreprocessingConfig:
 class ModelTrainConfig:
     save_model_dir:Path
     save_model_name: Path
+
+@dataclass(frozen=True)
+class MLFlowConfig:
+    mlflow_tracking_uri:str
+    mlflow_tracking_username:str
+    mlflow_tracking_password:str

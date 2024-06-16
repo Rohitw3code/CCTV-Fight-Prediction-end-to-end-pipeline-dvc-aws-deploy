@@ -1,5 +1,8 @@
 from fightClassifier.utils.read_yaml import read_yaml
-from fightClassifier.entity.config_entity import DataIngestionConfig,DataPreprocessingConfig,ModelTrainConfig
+from fightClassifier.entity.config_entity import (DataIngestionConfig,
+                                                  DataPreprocessingConfig,
+                                                  ModelTrainConfig,
+                                                  MLFlowConfig)
 from fightClassifier import logger
 
 class ConfigurationManager:
@@ -38,3 +41,15 @@ class ConfigurationManager:
         except Exception as e:
             logger.error(e)
         return config
+
+    def config_mlflow(self)->MLFlowConfig:
+        try:
+            config = self.config['mlflow_credential']
+            config = MLFlowConfig(mlflow_tracking_uri=config['MLFLOW_TRACKING_URI'],
+                                  mlflow_tracking_username=config['MLFLOW_TRACKING_USERNAME'],
+                                  mlflow_tracking_password=config['MLFLOW_TRACKING_PASSWORD'])
+        except Exception as e:
+            logger.error(e)
+        return config
+    
+    
