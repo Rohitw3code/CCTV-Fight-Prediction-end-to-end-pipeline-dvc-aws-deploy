@@ -17,6 +17,6 @@ mlflow_credential:
     REPO_OWNER: 'rohitcode005'
     MLFLOW_TRACKING_URI: https://dagshub.com/rohitcode005/CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy.mlflow
     MLFLOW_TRACKING_USERNAME: rohitcode005
-    MLFLOW_TRACKING_PASSWORD: ''
+    MLFLOW_TRACKING_PASSWORD: 
 
 

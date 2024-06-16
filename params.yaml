@@ -1,0 +1,21 @@
+data:
+  DATASET_NAME: "fight/nofights"
+  BATCH_SIZE: 4
+  INPUT_SHAPE: (42, 128, 128, 3)
+  NUM_CLASSES: 2
+
+optimizer:
+  LEARNING_RATE: 1e-4
+  WEIGHT_DECAY: 1e-5
+
+training:
+  EPOCHS: 20
+
+tubelet_embedding:
+  PATCH_SIZE: (8, 8, 8)
+
+vivit_architecture:
+  LAYER_NORM_EPS: 1e-6
+  PROJECTION_DIM: 64
+  NUM_HEADS: 2
+  NUM_LAYERS: 2
