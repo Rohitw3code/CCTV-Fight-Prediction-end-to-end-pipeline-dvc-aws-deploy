@@ -17,6 +17,15 @@ class ModelTrainConfig:
     save_model_name: Path
 
 @dataclass(frozen=True)
+class IntermediateDataConfig:
+    preprocessed_video_path: Path
+    preprocessed_label_path: Path
+    train_loader_path: Path
+    test_loader_path: Path
+    val_loader_path: Path
+
+
+@dataclass(frozen=True)
 class MLFlowConfig:
     mlflow_tracking_uri:str
     mlflow_tracking_username:str

@@ -1,0 +1,17 @@
+stages:
+  data_ingestion:
+    cmd: python fightClassifier/pipeline/data_ingestion_pipeline.py
+    deps: 
+      - fightClassifier/pipeline/data_ingestion_pipeline.py
+      - config/config.yaml
+    outs:
+      - artifacts/kaggle_dataset
+
+  
+  data_preprocessing:
+    cmd: python fightClassifier/pipeline/data_preprocessing.py
+    deps:
+      - fightClassifier/pipeline/data_preprocessing.py
+
+    
+

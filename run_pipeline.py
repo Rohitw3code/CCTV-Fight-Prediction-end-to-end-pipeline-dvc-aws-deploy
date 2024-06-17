@@ -42,6 +42,3 @@ if __name__ == '__main__':
     mlflow_pipeline = MLFlowPipeline()
     mlflow_pipeline.main()
     logger.info('Ended---->  MLFlow setup done :)')
-
-
-

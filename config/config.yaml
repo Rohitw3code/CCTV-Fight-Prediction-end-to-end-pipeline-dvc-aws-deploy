@@ -11,13 +11,20 @@ model_train:
     save_model_dir: artifacts/models
     save_model_name: video.keras
 
+intermediate_data:
+    preprocessed_video_path: artifacts/preprocessed_data/video_data_loader.pk
+    preprocessed_label_path: artifacts/preprocessed_data/label_data_loader.pk
+    train_loader_path: artifacts/loader/train_loader.pk
+    test_loader_path: artifacts/loader/test_loader.pk
+    val_loader_path: artifacts/loader/val_loader.pk
+
 mlflow_credential:
     MLFLOW: TRUE
     REPO_NAME: 'CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy'
     REPO_OWNER: 'rohitcode005'
     MLFLOW_TRACKING_URI: https://dagshub.com/rohitcode005/CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy.mlflow
     MLFLOW_TRACKING_USERNAME: rohitcode005
-    MLFLOW_TRACKING_PASSWORD: 
+    MLFLOW_TRACKING_PASSWORD: b53fb19cf0cae0da766408cf05c522d04c7f8d66
     project_name: voilance-detection
     model_name: video-vision
     evaluation_param_path: artifacts/mlflow_data/evaluation.json

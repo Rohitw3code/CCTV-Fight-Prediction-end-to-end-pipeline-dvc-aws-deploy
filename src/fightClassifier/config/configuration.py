@@ -1,15 +1,7 @@
 from fightClassifier.utils.read_yaml import read_yaml
-from fightClassifier.entity.config_entity import (DataIngestionConfig,
-                                                  DataPreprocessingConfig,
-                                                  ModelTrainConfig,
-                                                  MLFlowConfig)
+from fightClassifier.entity.config_entity import *
 
-from fightClassifier.entity.param_entity import (DataParam,
-                                                 ViViTArchitectureParam,
-                                                 TrainingParam,
-                                                 OptimizerParam,
-                                                 TubeletEmbeddingParam)
-
+from fightClassifier.entity.param_entity import *
 
 from fightClassifier import logger
 
@@ -49,6 +41,21 @@ class ConfigurationManager:
         except Exception as e:
             logger.error(e)
         return config
+    
+    def config_intermediate_data(self)->IntermediateDataConfig:
+        try:
+            config = self.config['intermediate_data']
+            config = IntermediateDataConfig(preprocessed_video_path=config['preprocessed_video_path'],
+                                            preprocessed_label_path=config['preprocessed_label_path'],
+                                            train_loader_path=config['train_loader_path'],
+                                            test_loader_path=config['test_loader_path'],
+                                            val_loader_path=config['val_loader_path'])
+        except Exception as e:
+            logger.error(e)
+        return config
+
+    
+
 
     def config_mlflow(self)->MLFlowConfig:
         try:
