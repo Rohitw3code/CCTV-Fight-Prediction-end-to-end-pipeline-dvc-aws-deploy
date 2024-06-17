@@ -58,7 +58,11 @@ class ConfigurationManager:
                                   mlflow_tracking_password=config['MLFLOW_TRACKING_PASSWORD'],
                                   repo_name=config['REPO_NAME'],
                                   repo_owner=config['REPO_OWNER'],
-                                  mlflow=config['MLFLOW'])
+                                  mlflow=config['MLFLOW'],
+                                  project_name=config['project_name'],
+                                  model_name=config['model_name'],
+                                  evaluation_param_path=config['evaluation_param_path'],
+                                  model_param_path=config['model_param_path'])
             
         except Exception as e:
             logger.error(e)

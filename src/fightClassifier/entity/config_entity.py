@@ -24,3 +24,7 @@ class MLFlowConfig:
     repo_owner:str
     repo_name:str
     mlflow:bool
+    project_name:str
+    model_name:str
+    evaluation_param_path: Path
+    model_param_path: Path

@@ -23,19 +23,24 @@ class MLFlowSetUp:
         os.environ['MLFLOW_TRACKING_PASSWORD'] = self.config.mlflow_tracking_password
     
     def mlflow_tracker(self):
-        eval_ = load_json('artifacts/mlflow_data/evaluation.json')
-        model_param = load_json('artifacts/mlflow_data/model.json')
+        eval_ = load_json(self.config.evaluation_param_path)
+        model_param = load_json(self.config.model_param_path)
         model = ModelTraining().load_model()
 
 
         mlflow.end_run()
 
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
-        while mlflow.start_run():
+        # End any existing run if it exists
+        if mlflow.active_run() is not None:
+            mlflow.end_run()
+
+        # Start a new MLflow run
+        with mlflow.start_run(run_name=self.config.project_name):
             mlflow.log_params(model_param)
             mlflow.log_metrics(eval_)
             if tracking_url_type_store != "file":
-                mlflow.keras.log_model(model, "model", registered_model_name="video-vision")
+                mlflow.keras.log_model(model, "model", registered_model_name=self.config.model_name)
             else:
                 mlflow.keras.log_model(model, "model")
 

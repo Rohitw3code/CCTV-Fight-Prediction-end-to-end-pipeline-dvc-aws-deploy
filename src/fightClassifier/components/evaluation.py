@@ -1,9 +1,6 @@
 from fightClassifier import logger
-from fightClassifier.entity.config_entity import ModelTrainConfig,MLFlowConfig
 from fightClassifier.components.model_training import ModelTraining
-import mlflow.keras
-from urllib.parse import urlparse
-import dagshub
+from fightClassifier.config.configuration import ConfigurationManager
 import mlflow
 import os
 from fightClassifier.utils.read_yaml import save_json
@@ -24,8 +21,11 @@ class Evaluate:
         logger.info(f"Test top 5 accuracy: {round(self.top_5_accuracy * 100, 2)}%")
     
     def mlflow_track(self):
+        mlflow_config = ConfigurationManager().config_mlflow()
+        folder_path = os.path.dirname(mlflow_config.evaluation_param_path)
+        os.makedirs(folder_path,exist_ok=True)
 
-        save_json('artifacts/mlflow_data/evaluation.json',{
+        save_json(mlflow_config.evaluation_param_path,{
                 'accuracy':self.accuracy,
                 'top_5_accuracy':self.top_5_accuracy
             })

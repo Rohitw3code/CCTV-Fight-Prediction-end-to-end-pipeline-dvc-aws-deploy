@@ -8,6 +8,7 @@ from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
 from fightClassifier.config.configuration import ConfigurationManager
 from fightClassifier.entity.param_entity import MeraParam
 from fightClassifier.utils.read_yaml import save_json
+from fightClassifier.config.configuration import ConfigurationManager
 
 import mlflow
 
@@ -123,7 +124,11 @@ class ModelTraining:
         return self.model
     
     def mlflow_tracker(self):
-        save_json('artifacts/mlflow_data/model.json',{
+        mlflow_config = ConfigurationManager().config_mlflow()
+        folder_path = os.path.dirname(mlflow_config.model_param_path)
+        os.makedirs(folder_path,exist_ok=True)
+
+        save_json(mlflow_config.model_param_path,{
                 'batch_size':self.params.data_param.batch_size,
                 'patch_size':self.params.tube_embedding_param.patch_size,
                 'epochs':self.params.training_param.epochs,
