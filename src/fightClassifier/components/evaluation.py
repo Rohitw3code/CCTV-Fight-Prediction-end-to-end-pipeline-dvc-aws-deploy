@@ -1,9 +1,7 @@
 from fightClassifier import logger
 from fightClassifier.components.model_training import ModelTraining
 from fightClassifier.config.configuration import ConfigurationManager
-import mlflow
-import os
-from fightClassifier.utils.read_yaml import save_json
+from fightClassifier.utils import save_json
 
 
 
@@ -22,9 +20,6 @@ class Evaluate:
     
     def mlflow_track(self):
         mlflow_config = ConfigurationManager().config_mlflow()
-        folder_path = os.path.dirname(mlflow_config.evaluation_param_path)
-        os.makedirs(folder_path,exist_ok=True)
-
         save_json(mlflow_config.evaluation_param_path,{
                 'accuracy':self.accuracy,
                 'top_5_accuracy':self.top_5_accuracy

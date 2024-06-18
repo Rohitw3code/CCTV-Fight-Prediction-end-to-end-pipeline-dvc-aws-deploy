@@ -1,16 +1,14 @@
+from fightClassifier.entity.config_entity import ModelTrainConfig
+from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
+from fightClassifier.config.configuration import ConfigurationManager
+from fightClassifier.entity.param_entity import MeraParam
+from fightClassifier.utils import save_json,create_folder_for_path
+from fightClassifier.config.configuration import ConfigurationManager
 from keras import layers
 import tensorflow as tf
 import keras
 from keras import ops
 import os
-from fightClassifier.entity.config_entity import ModelTrainConfig
-from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
-from fightClassifier.config.configuration import ConfigurationManager
-from fightClassifier.entity.param_entity import MeraParam
-from fightClassifier.utils.read_yaml import save_json
-from fightClassifier.config.configuration import ConfigurationManager
-
-import mlflow
 
 
 INPUT_SHAPE = (42, 128, 128, 3)
@@ -125,9 +123,6 @@ class ModelTraining:
     
     def mlflow_tracker(self):
         mlflow_config = ConfigurationManager().config_mlflow()
-        folder_path = os.path.dirname(mlflow_config.model_param_path)
-        os.makedirs(folder_path,exist_ok=True)
-
         save_json(mlflow_config.model_param_path,{
                 'batch_size':self.params.data_param.batch_size,
                 'patch_size':self.params.tube_embedding_param.patch_size,
@@ -143,8 +138,6 @@ class ModelTraining:
         return self.model
 
     def save_model(self):
-
-        os.makedirs(self.config.save_model_dir,exist_ok=True)
-
+        os.makedirs(self.config.save_model_dir)
         self.model.save(os.path.join(self.config.save_model_dir,
                                      self.config.save_model_name))

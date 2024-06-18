@@ -1,7 +1,7 @@
 from fightClassifier.components.data_loader import DataLoader
 from fightClassifier.params.param_manager import ParamManager
 from fightClassifier.config.configuration import ConfigurationManager
-from fightClassifier.utils import load_dataset , save_loader
+from fightClassifier.utils import load_dataset , save_loader,create_folder_for_path
 
 import numpy as np
 
@@ -23,7 +23,6 @@ class DataLoaderPipeline:
         
         data_loader.train_test_valid_split()
         trainLoader,testLoader,valLoader = data_loader.get_loaders()
-
 
         save_loader(loader=trainLoader,
                     path=configInterm.train_loader_path)
