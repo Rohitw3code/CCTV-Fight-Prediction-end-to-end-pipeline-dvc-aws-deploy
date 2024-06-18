@@ -1,7 +1,8 @@
 from fightClassifier.components.model_training import ModelTraining
 from fightClassifier.params.param_manager import ParamManager
 from fightClassifier.config.configuration import ConfigurationManager
-from fightClassifier.utils import load_from_pickle
+from fightClassifier.utils import load_from_tensor
+import numpy as np
 
 
 class ModelTrainingPipeline:
@@ -13,10 +14,6 @@ class ModelTrainingPipeline:
     def main(self):
         paramManager = ParamManager()
         params = paramManager.param_mega()
-
-        configManager = ConfigurationManager()
-        config = configManager.config_intermediate_data()
-        
 
         modelTrain = ModelTraining(trainLoader=self.trainLoader,
                                    testLoader=self.testLoader,

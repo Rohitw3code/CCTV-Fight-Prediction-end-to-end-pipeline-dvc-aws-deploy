@@ -16,11 +16,11 @@ if __name__ == '__main__':
 
     logger.info('Started---->  Data PreProcessing Pipeline')
     data_process = DataPreprocessingPipeline()
-    final_dataset,final_labels,dims_df = data_process.main()
+    data_process.main()
     logger.info('Ended------>  Data PreProcessing Pipeline')
 
     logger.info('Started---->  DataLoader Pipeline')
-    data_loader = DataLoaderPipeline(final_dataset,final_labels)
+    data_loader = DataLoaderPipeline()
     trainLoader,testLoader,validLoader = data_loader.main()
     logger.info('Ended------>  DataLoader Pipeline')
 

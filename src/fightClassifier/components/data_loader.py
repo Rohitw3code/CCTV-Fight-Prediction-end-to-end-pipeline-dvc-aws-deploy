@@ -1,7 +1,7 @@
 from fightClassifier import logger
 from sklearn.model_selection import train_test_split
 from fightClassifier.entity.param_entity import DataParam
-from fightClassifier.utils import save_to_pickle
+from fightClassifier.utils import save_to_tensor
 from fightClassifier.config.configuration import ConfigurationManager
 import os
 import tensorflow as tf  # for data preprocessing only
