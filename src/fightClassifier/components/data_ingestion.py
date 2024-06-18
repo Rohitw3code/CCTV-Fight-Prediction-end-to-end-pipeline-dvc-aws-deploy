@@ -19,11 +19,11 @@ class DataIngestion:
             logger.error('Authentication Problem : '+e)
 
     def download_dataset_from_kaggle(self):
+        os.makedirs(self.config.kaggle_dataset_dir,exist_ok=True)
         if any(Path(self.config.kaggle_dataset_dir).iterdir()):
             return logger.info('Dataset already downloaded')
         try:
             logger.info('downloading dataset from kaggle')
-            os.makedirs(self.config.kaggle_dataset_dir,exist_ok=True)
             print(self.config)
             kaggle.api.dataset_download_files(self.config.kaggle_dataset_name, path=self.config.kaggle_dataset_dir, unzip=True)
             logger.info('download completed!!')

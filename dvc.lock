@@ -1,0 +1,33 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/fightClassifier/pipeline/data_ingestion_pipeline.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 637219e163b338d1eb23d2060d9f258d
+      size: 1258
+    - path: src/fightClassifier/pipeline/data_ingestion_pipeline.py
+      hash: md5
+      md5: 9717f3ae0fc80088081b4984e3801003
+      size: 610
+    outs:
+    - path: artifacts/kaggle_dataset
+      hash: md5
+      md5: 4156340730f4db8b660d12056f663f63.dir
+      size: 769857536
+      nfiles: 201
+  data_preprocessing:
+    cmd: python src/fightClassifier/pipeline/data_preprocessing.py
+    deps:
+    - path: src/fightClassifier/pipeline/data_preprocessing.py
+      hash: md5
+      md5: b002ed06d7f8057c06f025dee3669384
+      size: 1436
+  data_loader:
+    cmd: python src/fightClassifier/pipeline/data_loader_pipeline.py
+    deps:
+    - path: src/fightClassifier/pipeline/data_loader_pipeline.py
+      hash: md5
+      md5: 2f2660b7e2ec28649186e76bd6ce55e1
+      size: 785

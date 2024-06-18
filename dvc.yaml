@@ -1,17 +1,55 @@
 stages:
   data_ingestion:
-    cmd: python fightClassifier/pipeline/data_ingestion_pipeline.py
-    deps: 
-      - fightClassifier/pipeline/data_ingestion_pipeline.py
-      - config/config.yaml
-    outs:
-      - artifacts/kaggle_dataset
-
-  
-  data_preprocessing:
-    cmd: python fightClassifier/pipeline/data_preprocessing.py
+    cmd: python src/fightClassifier/pipeline/data_ingestion_pipeline.py
     deps:
-      - fightClassifier/pipeline/data_preprocessing.py
+      - src/fightClassifier/pipeline/data_ingestion_pipeline.py
+    outs:
+      - dvcf/data_ingestion
 
-    
+  data_preprocessing:
+    cmd: python src/fightClassifier/pipeline/data_preprocessing.py
+    deps:
+      - src/fightClassifier/pipeline/data_preprocessing.py
+      - artifacts/data_ingestion
+    outs:
+      - artifacts/data_preprocessing/final_dataset
+      - artifacts/data_preprocessing/final_labels
+      - artifacts/data_preprocessing/dims_df
 
+  data_loader:
+    cmd: python src/fightClassifier/pipeline/data_loader_pipeline.py
+    deps:
+      - src/fightClassifier/pipeline/data_loader_pipeline.py
+      - artifacts/data_preprocessing/final_dataset
+      - artifacts/data_preprocessing/final_labels
+    outs:
+      - artifacts/data_loader/trainLoader
+      - artifacts/data_loader/testLoader
+      - artifacts/data_loader/validLoader
+
+  model_training:
+    cmd: python src/fightClassifier/pipeline/model_training_pipeline.py
+    deps:
+      - src/fightClassifier/pipeline/model_training_pipeline.py
+      - artifacts/data_loader/trainLoader
+      - artifacts/data_loader/testLoader
+      - artifacts/data_loader/validLoader
+    outs:
+      - artifacts/model
+
+  evaluate:
+    cmd: python src/fightClassifier/pipeline/evaluate_pipeline.py
+    deps:
+      - src/fightClassifier/pipeline/evaluate_pipeline.py
+      - artifacts/data_loader/testLoader
+      - artifacts/model
+    outs:
+      - artifacts/evaluation
+
+  mlflow_setup:
+    cmd: python src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
+    deps:
+      - src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
+      - artifacts/evaluation
+    outs:
+      - artifacts/mlflow

@@ -1,7 +1,7 @@
 from fightClassifier.config.configuration import ConfigurationManager
 from fightClassifier.components.data_preprocessing import DataPreprocessing
 from fightClassifier import logger
-from fightClassifier.utils import save_to_pickle
+from fightClassifier.utils import save_dataset
 import pandas as pd
 import numpy as np
 from typing import Tuple
@@ -24,8 +24,9 @@ class DataPreprocessingPipeline:
         # logger.info('video dims info -> ',dims_df.describe())
         # logger.info('dims dataframe -> ')
         # logger.info(dims_df.head())
-        save_to_pickle(video_dataset,'artifacts/preprocessed_data/video_data_loader.pk')
-        save_to_pickle(video_dataset,'artifacts/preprocessed_data/label_data_loader.pk')
+        save_dataset(video_data=video_dataset,labels=video_labels
+                     ,path='artifacts/preprocessed_data/video.npz')
+
 
         return video_dataset,video_labels,dims_df
 

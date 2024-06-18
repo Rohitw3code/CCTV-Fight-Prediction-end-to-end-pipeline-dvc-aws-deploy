@@ -1,7 +1,7 @@
 from fightClassifier.components.data_loader import DataLoader
 from fightClassifier.params.param_manager import ParamManager
 from fightClassifier.config.configuration import ConfigurationManager
-from fightClassifier.utils import load_from_pickle
+from fightClassifier.utils import load_dataset
 
 import numpy as np
 
@@ -11,6 +11,11 @@ class DataLoaderPipeline:
         self.label = label
 
     def main(self):
+        
+        config = ConfigurationManager()
+        config = config.config_data_preprocessing()
+
+        dataset,label = load_dataset('artifacts/preprocessed_data/video.npz')
 
         paramManager = ParamManager()
         param = paramManager.param_data()
