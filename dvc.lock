@@ -48,8 +48,8 @@ stages:
     outs:
     - path: artifacts/loader
       hash: md5
-      md5: f94a79bdfca7cc5beeb80b25d11118f6.dir
-      size: 1659766414
+      md5: c5ca69493c54841d25107ed2343be0d8.dir
+      size: 1659766416
       nfiles: 9
   model_training:
     cmd: python src/fightClassifier/pipeline/model_training_pipeline.py
@@ -62,10 +62,22 @@ stages:
       hash: md5
       md5: 1b65481c0c27b87c257ba853b760a5ca
       size: 1147
+    params:
+      params.yaml:
+        data:
+          DATASET_NAME: fight/nofights
+          BATCH_SIZE: 32
+          INPUT_SHAPE: (42, 128, 128, 3)
+          NUM_CLASSES: 2
+        optimizer:
+          LEARNING_RATE: 0.1
+          WEIGHT_DECAY: 1e-08
+        training:
+          EPOCHS: 10
     outs:
     - path: artifacts/models
       hash: md5
-      md5: 5810a5913b2c1d44f79cbc2eb616426a.dir
+      md5: 0b11c31091839e58192b9915c8fdae84.dir
       size: 3501113
       nfiles: 1
   evaluate:
@@ -79,6 +91,18 @@ stages:
       hash: md5
       md5: b3a75f24e3d5ee5fcd4b95c516e554b7
       size: 599
+    params:
+      params.yaml:
+        data:
+          DATASET_NAME: fight/nofights
+          BATCH_SIZE: 32
+          INPUT_SHAPE: (42, 128, 128, 3)
+          NUM_CLASSES: 2
+        optimizer:
+          LEARNING_RATE: 0.1
+          WEIGHT_DECAY: 1e-08
+        training:
+          EPOCHS: 10
   mlflow_setup:
     cmd: python src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
     deps:
@@ -90,3 +114,15 @@ stages:
       hash: md5
       md5: 543ef31e2fcf2f917f99fe68308526e2
       size: 537
+    params:
+      params.yaml:
+        data:
+          DATASET_NAME: fight/nofights
+          BATCH_SIZE: 32
+          INPUT_SHAPE: (42, 128, 128, 3)
+          NUM_CLASSES: 2
+        optimizer:
+          LEARNING_RATE: 0.1
+          WEIGHT_DECAY: 1e-08
+        training:
+          EPOCHS: 10

@@ -6,10 +6,10 @@ data:
 
 optimizer:
   LEARNING_RATE: 1e-1
-  WEIGHT_DECAY: 1e-5
+  WEIGHT_DECAY: 1e-8
 
 training:
-  EPOCHS: 2
+  EPOCHS: 10
 
 tubelet_embedding:
   PATCH_SIZE: (8, 8, 8)

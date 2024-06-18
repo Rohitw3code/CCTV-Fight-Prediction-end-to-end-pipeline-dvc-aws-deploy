@@ -12,6 +12,7 @@ stages:
     deps:
       - src/fightClassifier/pipeline/data_preprocessing.py
       - config/config.yaml
+      - artifacts/kaggle_dataset
     outs:
       - artifacts/preprocessed_data
 
@@ -20,6 +21,7 @@ stages:
     deps:
       - src/fightClassifier/pipeline/data_loader_pipeline.py
       - config/config.yaml
+      - artifacts/kaggle_dataset
     outs:
       - artifacts/loader
 
@@ -28,17 +30,33 @@ stages:
     deps:
       - src/fightClassifier/pipeline/model_training_pipeline.py
       - config/config.yaml
+      - artifacts/kaggle_dataset
     outs:
       - artifacts/models
+    params:
+      - optimizer
+      - data
+      - training
 
   evaluate:
     cmd: python src/fightClassifier/pipeline/evaluate_pipeline.py
     deps:
+      - src/fightClassifier/pipeline/model_training_pipeline.py
       - src/fightClassifier/pipeline/evaluate_pipeline.py
       - config/config.yaml
+      - artifacts/models
+    params:
+      - optimizer
+      - data
+      - training
 
   mlflow_setup:
     cmd: python src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
     deps:
       - src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
       - config/config.yaml
+      - artifacts/kaggle_dataset
+    params:
+      - optimizer
+      - data
+      - training
