@@ -21,20 +21,17 @@ if __name__ == '__main__':
 
     logger.info('Started---->  DataLoader Pipeline')
     data_loader = DataLoaderPipeline()
-    trainLoader,testLoader,validLoader = data_loader.main()
+    data_loader.main()
     logger.info('Ended------>  DataLoader Pipeline')
 
     logger.info('Started---->  ModelTraining Pipeline')
-    model_train = ModelTrainingPipeline(trainLoader=trainLoader,
-                                        testLoader=testLoader,
-                                        validLoader=validLoader)
-    
+    model_train = ModelTrainingPipeline()
     model = model_train.main()
     logger.info('Ended------>  ModelTraining Pipeline')
 
 
     logger.info('Started---->  Evaluation Pipeline')
-    eval_ = EvaluateModelPipeline(testLoader=testLoader)    
+    eval_ = EvaluateModelPipeline()    
     eval_.main()
     logger.info('Ended------>  Evaluation Pipeline')
 

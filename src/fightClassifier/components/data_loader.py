@@ -1,11 +1,11 @@
 from fightClassifier import logger
 from sklearn.model_selection import train_test_split
 from fightClassifier.entity.param_entity import DataParam
-from fightClassifier.utils import save_to_tensor
 from fightClassifier.config.configuration import ConfigurationManager
 import os
 import tensorflow as tf  # for data preprocessing only
 import keras
+import pickle
 from keras import layers
 from typing import Tuple
 import numpy as np
@@ -93,8 +93,5 @@ class DataLoader:
         validloader = self.prepare_dataloader(videos=self.valid_x, labels=self.valid_y,
                                               loader_type="test",
                                               batch_size=self.param.batch_size)
-        
-        configManager = ConfigurationManager()
-        config = configManager.config_intermediate_data()
         
         return trainloader, testloader, validloader
