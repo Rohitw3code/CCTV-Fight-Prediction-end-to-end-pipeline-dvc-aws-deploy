@@ -11,10 +11,9 @@ class DataLoaderPipeline:
 
     def main(self):
         
-        config = ConfigurationManager()
-        config = config.config_data_preprocessing()
-
-        dataset,label = load_dataset('artifacts/preprocessed_data/video.npz')
+        configManager = ConfigurationManager()
+        configInterm = configManager.config_intermediate_data()
+        dataset,label = load_dataset(configInterm.preprocessed_video_label_path)
 
         paramManager = ParamManager()
         param = paramManager.param_data()
@@ -25,8 +24,15 @@ class DataLoaderPipeline:
         data_loader.train_test_valid_split()
         trainLoader,testLoader,valLoader = data_loader.get_loaders()
 
-        save_loader(trainLoader,'artifacts/loader/train-loader')
-        save_loader(testLoader,'artifacts/loader/test-loader')
-        save_loader(valLoader,'artifacts/loader/val-loader')
 
+        save_loader(loader=trainLoader,
+                    path=configInterm.train_loader_path)
+        save_loader(loader=testLoader,
+                    path=configInterm.test_loader_path)
+        save_loader(loader=valLoader,
+                    path=configInterm.val_loader_path)
         return trainLoader,testLoader,valLoader
+    
+if __name__ == '__main__':
+    pipeline = DataLoaderPipeline()
+    pipeline.main()

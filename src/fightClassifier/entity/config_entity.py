@@ -18,8 +18,7 @@ class ModelTrainConfig:
 
 @dataclass(frozen=True)
 class IntermediateDataConfig:
-    preprocessed_video_path: Path
-    preprocessed_label_path: Path
+    preprocessed_video_label_path: Path
     train_loader_path: Path
     test_loader_path: Path
     val_loader_path: Path

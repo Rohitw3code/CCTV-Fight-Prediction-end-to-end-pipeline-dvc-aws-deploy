@@ -12,11 +12,10 @@ model_train:
     save_model_name: video.keras
 
 intermediate_data:
-    preprocessed_video_path: artifacts/preprocessed_data/video_data_loader.pk
-    preprocessed_label_path: artifacts/preprocessed_data/label_data_loader.pk
-    train_loader_path: artifacts/loader/train_loader.pk
-    test_loader_path: artifacts/loader/test_loader.pk
-    val_loader_path: artifacts/loader/val_loader.pk
+    preprocessed_video_label_path: artifacts/preprocessed_data/video_label.npz
+    train_loader_path: artifacts/loader/train-loader
+    test_loader_path: artifacts/loader/test-loader
+    val_loader_path: artifacts/loader/val-loader
 
 mlflow_credential:
     MLFLOW: TRUE

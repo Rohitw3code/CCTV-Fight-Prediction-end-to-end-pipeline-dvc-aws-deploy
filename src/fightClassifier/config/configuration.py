@@ -45,8 +45,7 @@ class ConfigurationManager:
     def config_intermediate_data(self)->IntermediateDataConfig:
         try:
             config = self.config['intermediate_data']
-            config = IntermediateDataConfig(preprocessed_video_path=config['preprocessed_video_path'],
-                                            preprocessed_label_path=config['preprocessed_label_path'],
+            config = IntermediateDataConfig(preprocessed_video_label_path=config['preprocessed_video_label_path'],
                                             train_loader_path=config['train_loader_path'],
                                             test_loader_path=config['test_loader_path'],
                                             val_loader_path=config['val_loader_path'])

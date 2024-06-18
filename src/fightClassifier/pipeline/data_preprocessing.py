@@ -14,8 +14,8 @@ class DataPreprocessingPipeline:
                           np.concatenate,
                           np.asarray]:
         
-        config = ConfigurationManager()
-        config = config.config_data_preprocessing()
+        configManager = ConfigurationManager()
+        config = configManager.config_data_preprocessing()
         data_processing = DataPreprocessing(config.load_dataset_dir)
         video_dataset,video_labels,video_dims = data_processing.load_video()
         logger.info(f'Feature : {video_dataset.shape}')
@@ -24,8 +24,10 @@ class DataPreprocessingPipeline:
         # logger.info('video dims info -> ',dims_df.describe())
         # logger.info('dims dataframe -> ')
         # logger.info(dims_df.head())
+
+        config = configManager.config_intermediate_data()
         save_dataset(video_data=video_dataset,labels=video_labels
-                     ,path='artifacts/preprocessed_data/video.npz')
+                     ,path=config.preprocessed_video_label_path)
 
 
         return video_dataset,video_labels,dims_df

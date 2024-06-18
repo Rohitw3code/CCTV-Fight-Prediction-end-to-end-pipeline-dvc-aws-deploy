@@ -2,7 +2,6 @@ import pickle
 import tensorflow as tf
 import numpy as np
 
-
 def save_dataset(video_data,labels,path):
     np.savez(path,video_data=video_data,labels=labels)
 
