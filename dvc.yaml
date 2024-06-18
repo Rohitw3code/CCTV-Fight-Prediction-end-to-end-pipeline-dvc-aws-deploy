@@ -3,53 +3,42 @@ stages:
     cmd: python src/fightClassifier/pipeline/data_ingestion_pipeline.py
     deps:
       - src/fightClassifier/pipeline/data_ingestion_pipeline.py
+      - config/config.yaml
     outs:
-      - dvcf/data_ingestion
+      - artifacts/kaggle_dataset
 
   data_preprocessing:
     cmd: python src/fightClassifier/pipeline/data_preprocessing.py
     deps:
       - src/fightClassifier/pipeline/data_preprocessing.py
-      - artifacts/data_ingestion
+      - config/config.yaml
     outs:
-      - artifacts/data_preprocessing/final_dataset
-      - artifacts/data_preprocessing/final_labels
-      - artifacts/data_preprocessing/dims_df
+      - artifacts/preprocessed_data
 
   data_loader:
     cmd: python src/fightClassifier/pipeline/data_loader_pipeline.py
     deps:
       - src/fightClassifier/pipeline/data_loader_pipeline.py
-      - artifacts/data_preprocessing/final_dataset
-      - artifacts/data_preprocessing/final_labels
+      - config/config.yaml
     outs:
-      - artifacts/data_loader/trainLoader
-      - artifacts/data_loader/testLoader
-      - artifacts/data_loader/validLoader
+      - artifacts/loader
 
   model_training:
     cmd: python src/fightClassifier/pipeline/model_training_pipeline.py
     deps:
       - src/fightClassifier/pipeline/model_training_pipeline.py
-      - artifacts/data_loader/trainLoader
-      - artifacts/data_loader/testLoader
-      - artifacts/data_loader/validLoader
+      - config/config.yaml
     outs:
-      - artifacts/model
+      - artifacts/models
 
   evaluate:
     cmd: python src/fightClassifier/pipeline/evaluate_pipeline.py
     deps:
       - src/fightClassifier/pipeline/evaluate_pipeline.py
-      - artifacts/data_loader/testLoader
-      - artifacts/model
-    outs:
-      - artifacts/evaluation
+      - config/config.yaml
 
   mlflow_setup:
     cmd: python src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
     deps:
       - src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
-      - artifacts/evaluation
-    outs:
-      - artifacts/mlflow
+      - config/config.yaml

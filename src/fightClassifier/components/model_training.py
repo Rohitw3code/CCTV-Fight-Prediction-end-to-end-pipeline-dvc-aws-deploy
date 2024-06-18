@@ -2,7 +2,7 @@ from fightClassifier.entity.config_entity import ModelTrainConfig
 from fightClassifier.components.Encode import TubeletEmbedding,PositionalEncoder
 from fightClassifier.config.configuration import ConfigurationManager
 from fightClassifier.entity.param_entity import MeraParam
-from fightClassifier.utils import save_json,create_folder_for_path
+from fightClassifier.utils import save_json
 from fightClassifier.config.configuration import ConfigurationManager
 from keras import layers
 import tensorflow as tf
