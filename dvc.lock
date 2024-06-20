@@ -7,6 +7,10 @@ stages:
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/data_ingestion.py
+      hash: md5
+      md5: e8438913c818269cc49cddcd97db0fcc
+      size: 1260
     - path: src/fightClassifier/pipeline/data_ingestion_pipeline.py
       hash: md5
       md5: 9717f3ae0fc80088081b4984e3801003
@@ -29,6 +33,14 @@ stages:
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/data_ingestion.py
+      hash: md5
+      md5: e8438913c818269cc49cddcd97db0fcc
+      size: 1260
+    - path: src/fightClassifier/components/data_preprocessing.py
+      hash: md5
+      md5: b218f464f45ba57ec311eb4d590d46b0
+      size: 2857
     - path: src/fightClassifier/pipeline/data_preprocessing.py
       hash: md5
       md5: c531bf2eea02da42508cfdf2a2ee28e7
@@ -51,28 +63,52 @@ stages:
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/data_loader.py
+      hash: md5
+      md5: 7d79f9eecacb99aa71638b593ed504df
+      size: 3726
+    - path: src/fightClassifier/components/data_preprocessing.py
+      hash: md5
+      md5: b218f464f45ba57ec311eb4d590d46b0
+      size: 2857
     - path: src/fightClassifier/pipeline/data_loader_pipeline.py
       hash: md5
       md5: 00d3dbe1586cf4383582b3db8031e74a
       size: 1387
+    - path: src/fightClassifier/pipeline/data_preprocessing.py
+      hash: md5
+      md5: c531bf2eea02da42508cfdf2a2ee28e7
+      size: 1475
     outs:
     - path: artifacts/loader
       hash: md5
-      md5: 3229485ababb15acdb6a8d43b4132021.dir
-      size: 1659766414
+      md5: 9b9a6a1d8eef58508bd348db87ab8bfc.dir
+      size: 1659766949
       nfiles: 9
   model_training:
     cmd: python src/fightClassifier/pipeline/model_training_pipeline.py
     deps:
     - path: artifacts/loader
       hash: md5
-      md5: 3229485ababb15acdb6a8d43b4132021.dir
-      size: 1659766414
+      md5: 9b9a6a1d8eef58508bd348db87ab8bfc.dir
+      size: 1659766949
       nfiles: 9
     - path: config/config.yaml
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/data_loader.py
+      hash: md5
+      md5: 7d79f9eecacb99aa71638b593ed504df
+      size: 3726
+    - path: src/fightClassifier/components/model_training.py
+      hash: md5
+      md5: 30149f6c9dd012a953d1702cb56b44a2
+      size: 5102
+    - path: src/fightClassifier/pipeline/data_loader_pipeline.py
+      hash: md5
+      md5: 00d3dbe1586cf4383582b3db8031e74a
+      size: 1387
     - path: src/fightClassifier/pipeline/model_training_pipeline.py
       hash: md5
       md5: 1b65481c0c27b87c257ba853b760a5ca
@@ -81,32 +117,40 @@ stages:
       params.yaml:
         data:
           DATASET_NAME: fight/nofights
-          BATCH_SIZE: 32
+          BATCH_SIZE: 16
           INPUT_SHAPE: (42, 128, 128, 3)
           NUM_CLASSES: 2
         optimizer:
-          LEARNING_RATE: 0.1
-          WEIGHT_DECAY: 1e-08
+          LEARNING_RATE: 1e-05
+          WEIGHT_DECAY: 1e-05
         training:
-          EPOCHS: 2
+          EPOCHS: 50
     outs:
     - path: artifacts/models
       hash: md5
-      md5: 2f41d0627185f17c98171487bc7fd8a0.dir
-      size: 3501113
+      md5: ea1bb4da487deb147792ba83ffd18bc2.dir
+      size: 3501115
       nfiles: 1
   evaluate:
     cmd: python src/fightClassifier/pipeline/evaluate_pipeline.py
     deps:
     - path: artifacts/models
       hash: md5
-      md5: 2f41d0627185f17c98171487bc7fd8a0.dir
-      size: 3501113
+      md5: ea1bb4da487deb147792ba83ffd18bc2.dir
+      size: 3501115
       nfiles: 1
     - path: config/config.yaml
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/evaluation.py
+      hash: md5
+      md5: 3c75bc3a2b1320d850ebb5c9f957d1a0
+      size: 1010
+    - path: src/fightClassifier/components/model_training.py
+      hash: md5
+      md5: 30149f6c9dd012a953d1702cb56b44a2
+      size: 5102
     - path: src/fightClassifier/pipeline/evaluate_pipeline.py
       hash: md5
       md5: b3a75f24e3d5ee5fcd4b95c516e554b7
@@ -119,26 +163,30 @@ stages:
       params.yaml:
         data:
           DATASET_NAME: fight/nofights
-          BATCH_SIZE: 32
+          BATCH_SIZE: 16
           INPUT_SHAPE: (42, 128, 128, 3)
           NUM_CLASSES: 2
         optimizer:
-          LEARNING_RATE: 0.1
-          WEIGHT_DECAY: 1e-08
+          LEARNING_RATE: 1e-05
+          WEIGHT_DECAY: 1e-05
         training:
-          EPOCHS: 2
+          EPOCHS: 50
   mlflow_setup:
     cmd: python src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
     deps:
-    - path: artifacts/kaggle_dataset
+    - path: artifacts/models
       hash: md5
-      md5: 4156340730f4db8b660d12056f663f63.dir
-      size: 769857536
-      nfiles: 201
+      md5: ea1bb4da487deb147792ba83ffd18bc2.dir
+      size: 3501115
+      nfiles: 1
     - path: config/config.yaml
       hash: md5
       md5: debe562bf58c85bf33a55c95b19c439b
       size: 1171
+    - path: src/fightClassifier/components/ml_flow.py
+      hash: md5
+      md5: 26c03fa3e3a7f188a6f93c53370d8736
+      size: 1752
     - path: src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
       hash: md5
       md5: 543ef31e2fcf2f917f99fe68308526e2
@@ -147,11 +195,11 @@ stages:
       params.yaml:
         data:
           DATASET_NAME: fight/nofights
-          BATCH_SIZE: 32
+          BATCH_SIZE: 16
           INPUT_SHAPE: (42, 128, 128, 3)
           NUM_CLASSES: 2
         optimizer:
-          LEARNING_RATE: 0.1
-          WEIGHT_DECAY: 1e-08
+          LEARNING_RATE: 1e-05
+          WEIGHT_DECAY: 1e-05
         training:
-          EPOCHS: 2
+          EPOCHS: 50

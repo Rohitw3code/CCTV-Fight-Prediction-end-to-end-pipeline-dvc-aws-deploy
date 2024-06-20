@@ -6,13 +6,14 @@ from pathlib import Path
 from typing import Tuple
 
 class DataPreprocessing:
-    def __init__(self,path:Path):
+    def __init__(self,path:Path='.'):
         self.path = Path(path)
         self.final_dataset = []
         self.final_dims = []
 
     def _load_all_frames(self,video_path):
         cap = cv2.VideoCapture(video_path)
+        print('loading---> ',video_path)
         if not cap.isOpened():
             return {'frames':None,'frames_dim':None,'success':False}
         

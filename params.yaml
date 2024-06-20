@@ -1,15 +1,15 @@
 data:
   DATASET_NAME: "fight/nofights"
-  BATCH_SIZE: 32
+  BATCH_SIZE: 16
   INPUT_SHAPE: (42, 128, 128, 3)
   NUM_CLASSES: 2
 
 optimizer:
-  LEARNING_RATE: 1e-1
-  WEIGHT_DECAY: 1e-8
+  LEARNING_RATE: 1e-5
+  WEIGHT_DECAY: 1e-5
 
 training:
-  EPOCHS: 2
+  EPOCHS: 50
 
 tubelet_embedding:
   PATCH_SIZE: (8, 8, 8)

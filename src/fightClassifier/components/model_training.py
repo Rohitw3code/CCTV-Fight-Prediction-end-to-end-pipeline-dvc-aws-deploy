@@ -11,28 +11,6 @@ from keras import ops
 import os
 
 
-INPUT_SHAPE = (42, 128, 128, 3)
-NUM_CLASSES = 2
-
-# ViViT ARCHITECTURE
-LAYER_NORM_EPS = 1e-6
-PROJECTION_DIM = 64
-NUM_HEADS = 2
-NUM_LAYERS = 2
-
-# OPTIMIZER
-LEARNING_RATE = 1e-4
-WEIGHT_DECAY = 1e-5
-
-# TRAINING
-EPOCHS = 2
-
-# TUBELET EMBEDDING
-PATCH_SIZE = (8, 8, 8)
-NUM_PATCHES = (INPUT_SHAPE[0] // PATCH_SIZE[0]) ** 2
-
-
-
 class ModelTraining:
     def __init__(self,trainLoader=None,
                  testLoader=None,
