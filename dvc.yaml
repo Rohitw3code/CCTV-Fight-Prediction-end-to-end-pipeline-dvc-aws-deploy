@@ -56,7 +56,7 @@ stages:
       - config/config.yaml
       - artifacts/loader  # Depend on data loader output
     outs:
-      - artifacts/models
+      - artifacts/model
     params:
       - optimizer
       - data
@@ -70,7 +70,7 @@ stages:
       - src/fightClassifier/pipeline/evaluate_pipeline.py
       - src/fightClassifier/components/model_training.py
       - config/config.yaml
-      - artifacts/models  # Depend on trained models
+      - artifacts/model  # Depend on trained models
     params:
       - optimizer
       - data
@@ -82,7 +82,7 @@ stages:
       - src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
       - src/fightClassifier/components/ml_flow.py
       - config/config.yaml
-      - artifacts/models  # Depend on trained models
+      - artifacts/model  # Depend on trained models
     params:
       - optimizer
       - data

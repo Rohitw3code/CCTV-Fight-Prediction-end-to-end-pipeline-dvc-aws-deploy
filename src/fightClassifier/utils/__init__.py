@@ -32,7 +32,6 @@ def read_yaml(path_to_yaml: Path) -> dict:
     
 def save_json(path: Path, data: dict):
     """save json data
-
     Args:
         path (Path): path to json file
         data (dict): data to be saved in json file
@@ -45,7 +44,6 @@ def save_json(path: Path, data: dict):
 
 def load_json(path: Path) -> dict:
     """load json files data
-
     Args:
         path (Path): path to json file
 
