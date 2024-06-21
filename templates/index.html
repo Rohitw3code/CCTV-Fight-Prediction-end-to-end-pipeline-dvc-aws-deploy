@@ -139,8 +139,16 @@
                         </form>
                     </div>
                 </div>
-        
                 {% if filename %}
+
+                <div>
+                    <h3>Vido info</h3>
+                    <div class="text-start">Duration: {{ duration }}</div>
+                    <div class="text-start">FPS : {{ fps }}</div>
+                    <div class="text-start">width : {{ width }}px</div>
+                    <div class="text-start">height : {{ height }}px</div>
+                </div>
+        
 
                 <form action="{{ url_for('index') }}" method="post" class="text-center mt-3">
                     <input type="hidden" name="filename" value="{{ filename }}">

@@ -11,8 +11,44 @@ model = ModelPredictor()
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+def video_info(path):
+    try:
+        from moviepy.editor import VideoFileClip
+        clip = VideoFileClip(path)
+        duration = clip.duration
+        fps = clip.fps
+        width, height = clip.size
+        return duration, fps, (width, height)
+    except Exception as e:
+        print(f'can read the video data : {e}')
+
+
+def convert_seconds_to_duration(seconds):
+    days = seconds // 86400
+    seconds %= 86400
+    hours = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+
+    duration_parts = []
+    if days > 0:
+        duration_parts.append(f"{int(days)} day{'s' if days > 1 else ''}")
+    if hours > 0:
+        duration_parts.append(f"{int(hours)} hour{'s' if hours > 1 else ''}")
+    if minutes > 0:
+        duration_parts.append(
+            f"{int(minutes)} minute{'s' if minutes > 1 else ''}")
+    if seconds > 0:
+        duration_parts.append(
+            f"{round(seconds)} second{'s' if seconds > 1 else ''}")
+    return ", ".join(duration_parts)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -25,20 +61,40 @@ def index():
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = file.filename
-                video_file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                video_file = os.path.join(
+                    app.config['UPLOAD_FOLDER'], filename)
+                duration, fps, (width, height) = video_info(video_file)
                 file.save(video_file)
-                return render_template('index.html', filename=filename)
+
+                return render_template('index.html', filename=filename,
+                                       duration=convert_seconds_to_duration(
+                                           duration),
+                                       fps=int(fps),
+                                       width=width,
+                                       height=height)
+
         elif 'predict' in request.form:
             filename = request.form.get('filename')
             video_file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             if os.path.exists(video_file):
                 pred = model.predict(video_file=video_file)
-                return render_template('index.html', filename=filename, prediction=pred)
+                duration, fps, (width, height) = model.video_info()
+                return render_template('index.html',
+                                       filename=filename,
+                                       prediction=pred,
+                                       duration=convert_seconds_to_duration(
+                                           duration),
+                                       fps=int(fps),
+                                       width=width,
+                                       height=height)
+
     return render_template('index.html')
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

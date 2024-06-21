@@ -10,6 +10,7 @@ fight-detection-surv-dataset/
 *.so
 
 artifacts
+violence
 
 # Distribution / packaging
 .Python
