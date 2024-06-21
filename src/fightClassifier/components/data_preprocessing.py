@@ -10,10 +10,11 @@ class DataPreprocessing:
         self.path = Path(path)
         self.final_dataset = []
         self.final_dims = []
+        self.num_frames = 42
 
     def _load_all_frames(self,video_path):
         cap = cv2.VideoCapture(video_path)
-        print('loading---> ',video_path)
+        # print('loading---> ',video_path)
         if not cap.isOpened():
             return {'frames':None,'frames_dim':None,'success':False}
         
@@ -60,7 +61,10 @@ class DataPreprocessing:
                 dims = np.asarray(load_data['frames_dim'])
                 dims[:,0] = video.shape[0]
                 video_dims += dims.tolist()
-                fights.append(self._trim_video_frames(video,42)) #42 means each video trimed to 42 frames only
+                trim_video = self._trim_video_frames(video,self.num_frames)
+                if len(trim_video) != self.num_frames:
+                    continue
+                fights.append(trim_video) #42 means each video trimed to 42 frames only
             
             category_lens[classes] = len(fights)
             self.final_dataset += fights

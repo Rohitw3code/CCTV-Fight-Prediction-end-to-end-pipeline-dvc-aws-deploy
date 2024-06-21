@@ -1,3 +1,18 @@
+artifacts:
+  raw-dataset:
+    path: artifacts/kaggle_dataset/Peliculas
+    type: dataset
+  preprocessed-data:
+    path: artifacts/preprocessed_data
+    type: dataset
+  loader:
+    path: artifacts/loader
+    type: dataset
+  video-classification:
+    path: model/video.keras
+    type: model
+
+    
 stages:
   data_ingestion:
     cmd: python src/fightClassifier/pipeline/data_ingestion_pipeline.py
@@ -15,7 +30,7 @@ stages:
       - src/fightClassifier/pipeline/data_preprocessing.py
       - src/fightClassifier/components/data_preprocessing.py
       - config/config.yaml
-      - artifacts/kaggle_dataset
+      - artifacts/kaggle_dataset  # Add dataset as a dependency
     outs:
       - artifacts/preprocessed_data
 
@@ -27,7 +42,7 @@ stages:
       - src/fightClassifier/pipeline/data_loader_pipeline.py
       - src/fightClassifier/components/data_loader.py
       - config/config.yaml
-      - artifacts/preprocessed_data
+      - artifacts/preprocessed_data  # Depend on preprocessed data
     outs:
       - artifacts/loader
 
@@ -39,7 +54,7 @@ stages:
       - src/fightClassifier/pipeline/model_training_pipeline.py
       - src/fightClassifier/components/model_training.py
       - config/config.yaml
-      - artifacts/loader
+      - artifacts/loader  # Depend on data loader output
     outs:
       - artifacts/models
     params:
@@ -55,7 +70,7 @@ stages:
       - src/fightClassifier/pipeline/evaluate_pipeline.py
       - src/fightClassifier/components/model_training.py
       - config/config.yaml
-      - artifacts/models
+      - artifacts/models  # Depend on trained models
     params:
       - optimizer
       - data
@@ -67,7 +82,7 @@ stages:
       - src/fightClassifier/pipeline/daghub_mlflow_pipeline.py
       - src/fightClassifier/components/ml_flow.py
       - config/config.yaml
-      - artifacts/models
+      - artifacts/models  # Depend on trained models
     params:
       - optimizer
       - data

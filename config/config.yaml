@@ -2,13 +2,13 @@ artifacts_root: artifacts
 
 data_ingestion:
     kaggle_dataset_dir: artifacts/kaggle_dataset
-    kaggle_dataset_name: naveenk903/movies-fight-detection-dataset
+    kaggle_dataset_name: rohitcode123/violence-dataset
 
 data_preprocessing:
-    load_dataset_dir: artifacts/kaggle_dataset/Peliculas
+    load_dataset_dir: artifacts/kaggle_dataset/violence
 
 model_train:
-    save_model_dir: artifacts/models
+    save_model_dir: artifacts/model
     save_model_name: video.keras
 
 intermediate_data:

@@ -94,6 +94,8 @@ class ModelTraining:
             ],
         )
 
+        # print('train size : ',self.trainloader.shape)
+
         # Train the model.
         _ = self.model.fit(self.trainloader, epochs=self.params.training_param.epochs, validation_data=self.validloader)
 

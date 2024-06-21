@@ -9,7 +9,7 @@ optimizer:
   WEIGHT_DECAY: 1e-5
 
 training:
-  EPOCHS: 50
+  EPOCHS: 30
 
 tubelet_embedding:
   PATCH_SIZE: (8, 8, 8)

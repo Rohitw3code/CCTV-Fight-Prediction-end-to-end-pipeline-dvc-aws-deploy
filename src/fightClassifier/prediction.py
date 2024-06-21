@@ -10,10 +10,9 @@ def single_preprocess(frames: tf.Tensor):
     frames = tf.image.convert_image_dtype(
         frames[
             ..., tf.newaxis
-        ],  # The new axis is to help for further processing with Conv3D layers
+        ],
         tf.float32,
     )
-    # Parse label
     return frames
 
 

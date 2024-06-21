@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+uploads/
+fight-detection-surv-dataset/
+
 # C extensions
 *.so
 
