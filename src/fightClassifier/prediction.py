@@ -52,9 +52,10 @@ class ModelPredictor:
             tensor = single_preprocess(short)
             video_ = tf.squeeze(tensor, axis=-1).numpy()
             output = self.model.predict(tf.expand_dims(video_,axis=0))[0]
-            if np.argmax(output) == 1:
-                violence.append((batch_num,short))
-                violence.append((batch_num,(short*255)))
+            class_ = np.argmax(output)
+            if class_ == 1 and output[1] > 0.98:
+                print(output)
+                violence.append((output[1],batch_num,(short*255)))
             print('batch no : ',batch_num)
         
         return violence

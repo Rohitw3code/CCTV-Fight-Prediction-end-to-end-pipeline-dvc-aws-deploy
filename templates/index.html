@@ -188,8 +188,15 @@
           </form>
           {% endif %} {% if prediction %}
           <div class="result-card">
-            <h3>Prediction:</h3>
+            <h3>Violence Prediction:</h3>
+            
+            {%for val in time_stamp%}
+            <div>{{val[0]}} - {{val[1]}}</div>
+
+            {%endfor%}
+
             <p>{{ prediction['output'] }}</p>
+
           </div>
           {% endif %}
         </div>

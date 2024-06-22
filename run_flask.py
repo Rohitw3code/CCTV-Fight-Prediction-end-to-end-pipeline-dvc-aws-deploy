@@ -44,14 +44,14 @@ def convert_seconds_to_duration(seconds):
     if days > 0:
         duration_parts.append(f"{int(days)} day{'s' if days > 1 else ''}")
     if hours > 0:
-        duration_parts.append(f"{int(hours)} hour{'s' if hours > 1 else ''}")
+        duration_parts.append(f"{int(hours)} hr{'s' if hours > 1 else ''}")
     if minutes > 0:
         duration_parts.append(
-            f"{int(minutes)} minute{'s' if minutes > 1 else ''}")
+            f"{int(minutes)} min{'s' if minutes > 1 else ''}")
     if seconds > 0:
         duration_parts.append(
-            f"{round(seconds)} second{'s' if seconds > 1 else ''}")
-    return ", ".join(duration_parts)
+            f"{round(seconds)} sec{'s' if seconds > 1 else ''}")
+    return " ".join(duration_parts)
 
 def empty_folder(path):
     # Iterate over all the files and directories in the static folder
@@ -103,16 +103,22 @@ def index():
                 if not os.path.exists('static'):
                     os.makedirs('static')
 
-                for i, sample in tuple(violence):
-                    gif_filename = f'static/testsample_{i}.gif'
+
+                duration, fps, (width, height) = model.video_info()
+
+
+                time_stamp = []
+
+                for acc,batch_num, sample in violence:
+                    gif_filename = f'static/testsample_{batch_num}.gif'
                     with open(gif_filename, 'wb') as f:
                         imageio.mimsave(f,sample.astype("uint8"), "GIF", fps=5)
                     all_gif_filenames.append(gif_filename)
+                    time_stamp.append([f'{convert_seconds_to_duration(batch_num*42/fps)}',acc])
 
                 gif_files = [f for f in os.listdir('static') if f.endswith('.gif')]
                 print(all_gif_filenames)
 
-                duration, fps, (width, height) = model.video_info()
                 return render_template('index.html',
                                        filename=filename,
                                        prediction=pred,
@@ -121,7 +127,8 @@ def index():
                                        fps=int(fps),
                                        width=width,
                                        height=height,
-                                       gifs=gif_files)
+                                       gifs=gif_files,
+                                       time_stamp=time_stamp)
 
     return render_template('index.html')
 
