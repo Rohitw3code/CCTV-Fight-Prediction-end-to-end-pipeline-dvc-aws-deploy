@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from fightClassifier.prediction import ModelPredictor
 import os
+import numpy as np
+import imageio
+import shutil
+import os
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -49,6 +53,18 @@ def convert_seconds_to_duration(seconds):
             f"{round(seconds)} second{'s' if seconds > 1 else ''}")
     return ", ".join(duration_parts)
 
+def empty_folder(path):
+    # Iterate over all the files and directories in the static folder
+    for filename in os.listdir(path):
+        file_path = os.path.join(path, filename)
+        try:
+            # Check if it's a file or directory and remove it
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')    
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -77,7 +93,25 @@ def index():
             filename = request.form.get('filename')
             video_file = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             if os.path.exists(video_file):
+                
                 pred = model.predict(video_file=video_file)
+
+                violence = model.load_long_video(video_file=video_file)
+
+                all_gif_filenames = []
+                empty_folder('static')
+                if not os.path.exists('static'):
+                    os.makedirs('static')
+
+                for i, sample in tuple(violence):
+                    gif_filename = f'static/testsample_{i}.gif'
+                    with open(gif_filename, 'wb') as f:
+                        imageio.mimsave(f,sample.astype("uint8"), "GIF", fps=5)
+                    all_gif_filenames.append(gif_filename)
+
+                gif_files = [f for f in os.listdir('static') if f.endswith('.gif')]
+                print(all_gif_filenames)
+
                 duration, fps, (width, height) = model.video_info()
                 return render_template('index.html',
                                        filename=filename,
@@ -86,7 +120,8 @@ def index():
                                            duration),
                                        fps=int(fps),
                                        width=width,
-                                       height=height)
+                                       height=height,
+                                       gifs=gif_files)
 
     return render_template('index.html')
 

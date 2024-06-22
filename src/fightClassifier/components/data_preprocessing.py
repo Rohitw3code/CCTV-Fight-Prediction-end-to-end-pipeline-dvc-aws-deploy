@@ -14,7 +14,6 @@ class DataPreprocessing:
 
     def _load_all_frames(self,video_path):
         cap = cv2.VideoCapture(video_path)
-        # print('loading---> ',video_path)
         if not cap.isOpened():
             return {'frames':None,'frames_dim':None,'success':False}
         
