@@ -104,7 +104,7 @@ def index():
                 for acc, batch_num, sample in violence:
                     gif_filename = f'static/testsample_{batch_num}.gif'
                     with open(gif_filename, 'wb') as f:
-                        imageio.mimsave(f, sample.astype("uint8"), "GIF", fps=5)
+                        imageio.mimsave(f, sample.astype("uint8"), "GIF", fps=10)
                     all_gif_filenames.append(gif_filename)
                     time_stamp.append([f'{convert_seconds_to_duration(batch_num*42/fps)}', acc])
 
