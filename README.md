@@ -6,6 +6,8 @@
 
 This project aims to detect violence in CCTV camera footage using deep learning and video vision techniques. It uses a dataset of 100 videos each of non-violence and violence, with each video being 3 seconds long.
 
+<img width="500px" src="https://github.com/Rohitw3code/CCTV-Fight-Prediction-end-to-end-pipeline-dvc-aws-deploy/blob/main/templates/frontend.png">
+
 **System Requirements**
 =====================
 
