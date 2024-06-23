@@ -95,8 +95,11 @@ def index():
                 if not os.path.exists('static'):
                     os.makedirs('static')
 
-                duration, fps, (width, height) = model.video_info()
+                violence = sorted(violence, key=lambda x: x[0], reverse=True)
+                if len(violence) > 5:
+                    violence = violence[:4]
 
+                duration, fps, (width, height) = model.video_info()
                 time_stamp = []
                 for acc, batch_num, sample in violence:
                     gif_filename = f'static/testsample_{batch_num}.gif'
